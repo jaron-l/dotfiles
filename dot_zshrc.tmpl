@@ -128,8 +128,8 @@ bindkey -M vicmd v edit-command-line
 # point python requests to ca-certificates
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-# poetry bin add
-export PATH="$HOME/.local/bin:$PATH"
+# user profiles bin add
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # alias to list manually installed packages
 alias aptmanually="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
