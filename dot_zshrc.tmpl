@@ -77,12 +77,12 @@ plugins=(
        	zsh-syntax-highlighting
 	sudo
 	adb
-	poetry
 	docker
 	docker-compose
 	cargo
-	gh
-	bw
+        {{ if (lookPath "poetry") -}} poetry {{- end }}
+        {{ if (lookPath "gh") -}} gh {{- end }}
+        {{ if (lookPath "bw") -}} bw {{- end }}
 )
 
 source $ZSH/oh-my-zsh.sh
