@@ -86,7 +86,7 @@ plugins=(
 	adb
 	docker
 	docker-compose
-	cargo
+	rust
         {{ if (lookPath "poetry") -}} poetry {{- end }}
         {{ if (lookPath "gh") -}} gh {{- end }}
         {{ if (lookPath "bw") -}} bw {{- end }}
