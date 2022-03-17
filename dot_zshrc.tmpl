@@ -93,6 +93,7 @@ plugins=(
         {{ if (lookPath "poetry") -}} poetry {{- end }}
         {{ if (lookPath "gh") -}} gh {{- end }}
         {{ if (lookPath "bw") -}} bw {{- end }}
+        {{ if (lookPath "chezmoi") -}} chezmoi {{- end }}
 )
 
 source $ZSH/oh-my-zsh.sh
