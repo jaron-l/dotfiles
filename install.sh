@@ -3,7 +3,7 @@
 set -e # -e: exit on error
 
 # install dependencies
-apt update && apt install -y vim zsh git less curl
+apt update && apt install -y curl
 
 if [ ! "$(command -v chezmoi)" ]; then
   bin_dir="$HOME/.local/bin"
