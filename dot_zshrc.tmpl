@@ -11,6 +11,9 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# init zsh-autocomplete
+source $ZSH/custom/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -119,8 +122,6 @@ export EDITOR='nvim'
 # Enable to edit command line
 bindkey -v
 autoload -U edit-command-line
-# enable completions
-autoload -U compinit && compinit -i
 # enable vi editing of command line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
