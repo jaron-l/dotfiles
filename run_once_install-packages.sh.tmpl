@@ -1,5 +1,9 @@
 #!/bin/sh
 sudo apt-get update
-sudo apt-get install -y zsh libglib2.0-dev
+sudo apt-get install -y zsh libglib2.0-dev git curl
+{{ if (lookPath "snap") }}
 sudo snap install --classic nvim
+{{ else }}
+sudo apt-get install -y neovim
+{{ end }}
 sudo chsh -s $(which zsh) $USER
