@@ -40,8 +40,8 @@ if [[ $YN == "y" || $YN == "Y" ]]
 then
 	read -e -p "git name: " -i "Jaron Lundwall" GITNAME
 	read -e -p "git email: " -i "13423952+jaron-l@users.noreply.github.com" GITEMAIL
-	git config --global user.name $GITNAME
-	git config --global user.email $GITEMAIL
+	git config --global user.name "$GITNAME"
+	git config --global user.email "$GITEMAIL"
 fi
 
 # install chezmoi
