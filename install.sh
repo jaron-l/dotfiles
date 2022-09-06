@@ -12,7 +12,7 @@ apt update && apt install -y curl sudo
 
 # set up user
 read -e -p "What username do you want to use?: " USERNAME
-if [ ! `sed -n "/^$USERNAME/p" /etc/passwd` ]  # determine in username exists
+if [ ! `id -u $USERNAME` ]  # determine in username exists
 then
 	echo "Username doesn't exist. Let's create it."
 	useradd $USERNAME
