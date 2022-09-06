@@ -11,27 +11,20 @@ set -e # -e: exit on error
 apt update && apt install -y curl sudo
 
 # set up user
-read -e -p "Do you want to create/use a user other than the current one? [y/N]: " YN
-if [[ $YN == "y" || $YN == "Y" ]] 
+read -e -p "What username do you want to use?: " USERNAME
+if [ ! `sed -n "/^$USERNAME/p" /etc/passwd` ]  # determine in username exists
 then
-	read -e -p "What username do you want to use?: " USERNAME
-	if [ ! `sed -n "/^$USERNAME/p" /etc/passwd` ]  # determine in username exists
-	then
-		echo "Username doesn't exist. Let's create it."
-		useradd $USERNAME
-		echo "Make password for $USERNAME: "
-		passwd $USERNAME
-		USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
-		mkdir -p $USERHOMEDIR
-		chown -R $USERNAME $USERHOMEDIR
-		usermod -aG sudo $USERNAME
-	else
-		echo "Username exists. Setting it to be used for this script."
-		USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
-	fi
+	echo "Username doesn't exist. Let's create it."
+	useradd $USERNAME
+	echo "Make password for $USERNAME: "
+	passwd $USERNAME
+	USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
+	mkdir -p $USERHOMEDIR
+	chown -R $USERNAME $USERHOMEDIR
+	usermod -aG sudo $USERNAME
 else
-	USERNAME=$USER
-	USERHOMEDIR=$HOME
+	echo "Username exists. Setting it to be used for this script."
+	USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
 fi
 
 # setup git
