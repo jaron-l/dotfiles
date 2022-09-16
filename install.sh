@@ -1,14 +1,29 @@
 #!/bin/bash
 # clone dotfiles repo and then run me
 # requires root privaledges and apt to run
-# optionally can use snap if snapd is already installed
 
 set -e # -e: exit on error
 
 # install dependencies
-# curl is needed to grab chezmoi
-# sudo is needed to run run_once script in dotfiles repo
-apt update && apt install -y curl sudo
+# curl is needed to grab chezmoi, piu, etc.
+# sudo is needed for piu and package managers
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+	if [ "$(command -v apt)" ]; then
+		apt update && apt install -y sudo curl
+	elif [ "$(command -v dnf)" ]; then
+		dnf install -y sudo curl
+	elif [ "$(command -v yum)" ]; then
+		yum install -y sudo curl
+	else
+		echo "ERROR: Unsupported package manager" 1>&2
+		exit 1
+	fi
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	:
+else
+	echo "ERROR: Unsupported operating system" 1>&2
+	exit 1
+fi
 
 # set up user
 read -e -p "What username do you want to use?: " USERNAME
@@ -18,13 +33,13 @@ then
 	useradd $USERNAME
 	echo "Make password for $USERNAME: "
 	passwd $USERNAME
-	USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
+	USERHOMEDIR="$( eval echo ~$USERNAME )"
 	mkdir -p $USERHOMEDIR
 	chown -R $USERNAME $USERHOMEDIR
 	usermod -aG sudo $USERNAME
 else
 	echo "Username exists. Setting it to be used for this script."
-	USERHOMEDIR=$( getent passwd $USERNAME | cut -d: -f6 )
+	USERHOMEDIR="$( eval echo ~$USERNAME )"
 fi
 
 # setup git
@@ -58,7 +73,7 @@ else
 fi
 
 # init chezmoi
-su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git" -P
+su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git"
 
 # set chezmoi author
 su -l $USERNAME -c "$chezmoi git config -- user.name \"Jaron Lundwall\""
