@@ -14,5 +14,6 @@ if [[ "$(command -v apt)" ]]; then
 else
 	piu install -y neovim
 fi
-# try to install thefuck package (may not work on all systems)
+# other packages on separate lines as they may fail
 piu install -y thefuck
+piu install -y fzf

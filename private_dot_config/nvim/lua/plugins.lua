@@ -27,6 +27,8 @@ return require('packer').startup(function(use)
 
   use 'preservim/tagbar' --tag bar for code navigation
 
+  use 'junegunn/fzf' -- fuzzy finder
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
