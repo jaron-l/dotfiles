@@ -7,22 +7,24 @@ set -e # -e: exit on error
 # install dependencies
 # curl is needed to grab chezmoi, piu, etc.
 # sudo is needed for piu and package managers
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-	if [ "$(command -v apt)" ]; then
-		apt update && apt install -y sudo curl
-	elif [ "$(command -v dnf)" ]; then
-		dnf install -y sudo curl
-	elif [ "$(command -v yum)" ]; then
-		yum install -y sudo curl
+if [ ! "$(command -v curl)" ] || [ ! "$(command -v sudo)" ]; then
+	if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+		if [ "$(command -v apt)" ]; then
+			apt update && apt install -y sudo curl
+		elif [ "$(command -v dnf)" ]; then
+			dnf install -y sudo curl
+		elif [ "$(command -v yum)" ]; then
+			yum install -y sudo curl
+		else
+			echo "ERROR: Unsupported package manager" 1>&2
+			exit 1
+		fi
+	elif [[ "$OSTYPE" == "darwin"* ]]; then
+		:
 	else
-		echo "ERROR: Unsupported package manager" 1>&2
+		echo "ERROR: Unsupported operating system" 1>&2
 		exit 1
 	fi
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-	:
-else
-	echo "ERROR: Unsupported operating system" 1>&2
-	exit 1
 fi
 
 # set up user
