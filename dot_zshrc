@@ -85,8 +85,8 @@ ZSH_TMUX_AUTOSTART=true
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	zsh-autosuggestions
-       	zsh-completions
-       	zsh-syntax-highlighting
+	zsh-completions
+	zsh-syntax-highlighting
 	aws
 	thefuck
 	fzf
@@ -95,11 +95,20 @@ plugins=(
 	docker
 	docker-compose
 	rust
-        {{ if (lookPath "poetry") -}} poetry {{- end }}
-        {{ if (lookPath "gh") -}} gh {{- end }}
-        {{ if (lookPath "bw") -}} bw {{- end }}
-        {{ if (lookPath "chezmoi") -}} chezmoi {{- end }}
 )
+# plugins that require something
+if [ "$(command -v poetry)" ]; then
+	plugins+=poetry
+fi
+if [ "$(command -v gh)" ]; then
+	plugins+=gh
+fi
+if ["$(command -v bw)" ]; then
+	plugins+=bw
+fi
+if [ "$(command -v chezmoi)" ]; then
+	plugins+=chezmoi
+fi
 
 source $ZSH/oh-my-zsh.sh
 
