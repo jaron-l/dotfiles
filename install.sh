@@ -76,6 +76,7 @@ fi
 
 # init chezmoi
 su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git"
+su -l $USERNAME -c "mkdir -p $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi && $chezmoi completion zsh > $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi/_chezmoi"
 
 # set chezmoi author
 su -l $USERNAME -c "$chezmoi git config -- user.name \"Jaron Lundwall\""

@@ -88,6 +88,7 @@ plugins=(
 	zsh-completions
 	zsh-syntax-highlighting
 	aws
+	chezmoi
 	thefuck
 	fzf
 	tmux
@@ -105,9 +106,6 @@ if [ "$(command -v gh)" ]; then
 fi
 if ["$(command -v bw)" ]; then
 	plugins+=bw
-fi
-if [ "$(command -v chezmoi)" ]; then
-	plugins+=chezmoi
 fi
 
 source $ZSH/oh-my-zsh.sh
