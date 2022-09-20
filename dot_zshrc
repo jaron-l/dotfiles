@@ -89,6 +89,7 @@ plugins=(
 	zsh-syntax-highlighting
 	aws
 	chezmoi
+	dirhistory
 	thefuck
 	fzf
 	tmux
