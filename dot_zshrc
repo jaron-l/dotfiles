@@ -97,6 +97,7 @@ plugins=(
 	docker
 	docker-compose
 	rust
+	vi-mode
 )
 # plugins that require something
 if [ "$(command -v poetry)" ]; then
@@ -133,13 +134,6 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Enable to edit command line
-bindkey -v
-autoload -U edit-command-line
-# enable vi editing of command line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-
 # point python requests to ca-certificates
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
@@ -147,6 +141,7 @@ export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="/snap/bin:$PATH"
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
+export PATH="$HOME/.toolbox/bin:$PATH"
 
 # alias to list manually installed packages
 alias aptmanually="comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)"
