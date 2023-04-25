@@ -1,30 +1,28 @@
 #!/bin/bash
 # clone dotfiles repo and then run me
-# requires root privaledges and apt to run
 
 set -e # -e: exit on error
 
-# install dependencies
-# curl is needed to grab chezmoi, piu, etc.
-# sudo is needed for piu and package managers
-if [ ! "$(command -v curl)" ] || [ ! "$(command -v sudo)" ]; then
-	if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-		if [ "$(command -v apt)" ]; then
-			apt update && apt install -y sudo curl
-		elif [ "$(command -v dnf)" ]; then
-			dnf install -y sudo curl
-		elif [ "$(command -v yum)" ]; then
-			yum install -y sudo curl
-		else
-			echo "ERROR: Unsupported package manager" 1>&2
-			exit 1
-		fi
-	elif [[ "$OSTYPE" == "darwin"* ]]; then
-		:
+# install system dependencies
+# curl is needed to grab chezmoi and brew
+# build tools are for brew
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+	if [ "$(command -v apt)" ]; then
+		apt update && apt install -y build-essential procps curl file git
+	elif [ "$(command -v dnf)" ]; then
+		dnf install -y procps-ng curl file git
+	elif [ "$(command -v yum)" ]; then
+		yum groupinstall 'Development Tools'
+		yum install -y procps-ng curl file git
 	else
-		echo "ERROR: Unsupported operating system" 1>&2
+		echo "ERROR: Unsupported package manager" 1>&2
 		exit 1
 	fi
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	:
+else
+	echo "ERROR: Unsupported operating system" 1>&2
+	exit 1
 fi
 
 # set up user
@@ -54,27 +52,17 @@ then
 	su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
 fi
 
-# install chezmoi
-if [ ! "$(command -v chezmoi)" ]; then
-  if [ ! "$(command -v snap)" ]; then
-	  bin_dir="$USERHOMEDIR/.local/bin"
-	  chezmoi="$bin_dir/chezmoi"
-	  if [ "$(command -v curl)" ]; then
-	    su -l $USERNAME -c "sh -c \"\$(curl -fsLS https://git.io/chezmoi)\" -- -b \"$bin_dir\""
-	  elif [ "$(command -v wget)" ]; then
-	    su -l $USERNAME -c "sh -c \"\$(wget -qO- https://git.io/chezmoi)\" -- -b \"$bin_dir\""
-	  else
-	    echo "To install chezmoi, you must have curl, wget, or snapd installed." >&2
-	    exit 1
-	  fi
-  else
-	  snap install --classic chezmoi
-  fi
-else
-  chezmoi=chezmoi
+# install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# add brew to path
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+	test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+	test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+brew install zsh tmux neovim thefuck fzf chezmoi
 
 # init chezmoi
+chezmoi=$(brew --prefix)/bin/chezmoi
 su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git"
 su -l $USERNAME -c "mkdir -p $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi && $chezmoi completion zsh > $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi/_chezmoi"
 
