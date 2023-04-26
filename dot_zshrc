@@ -89,6 +89,7 @@ plugins=(
 	zsh-syntax-highlighting
 	aws
 	asdf
+	brew
 	chezmoi
 	thefuck
 	fzf
