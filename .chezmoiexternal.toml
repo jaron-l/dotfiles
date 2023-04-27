@@ -35,3 +35,9 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+[".config/nvim"]
+	type = "archive"
+	url = "https://github.com/AstroNvim/AstroNvim/archive/main.tar.gz"
+	extract = true
+	stripComponents = 1
+	refreshPeriod = "168h"
