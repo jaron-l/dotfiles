@@ -8,11 +8,11 @@ set -e # -e: exit on error
 # build tools are for brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	if [ "$(command -v apt)" ]; then
-		apt update && apt install -y build-essential procps curl file git || sudo apt update && sudo apt install -y build-essential procps curl file git
+		(apt update && apt install -y build-essential procps curl file git) || (sudo apt update && sudo apt install -y build-essential procps curl file git)
 	elif [ "$(command -v dnf)" ]; then
-		dnf install -y procps-ng curl file git || sudo dnf install -y procps-ng curl file git
+		(dnf install -y procps-ng curl file git) || (sudo dnf install -y procps-ng curl file git)
 	elif [ "$(command -v yum)" ]; then
-		yum install -y procps-ng curl file git || sudo yum install -y procps-ng curl file git
+		(yum install -y procps-ng curl file git) || (sudo yum install -y procps-ng curl file git)
 	else
 		echo "ERROR: Unsupported package manager" 1>&2
 		exit 1
@@ -47,8 +47,14 @@ if [[ $YN == "y" || $YN == "Y" ]]
 then
 	read -e -p "git name: " -i "Jaron Lundwall" GITNAME
 	read -e -p "git email: " -i "13423952+jaron-l@users.noreply.github.com" GITEMAIL
-	su -l $USERNAME -c "git config --global user.name \"$GITNAME\""
-	su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
+	if [[ $(whoami) == $USERNAME ]]
+	then
+		git config --global user.name $GITNAME
+		git config --global user.email $GITEMAIL
+	else
+		su -l $USERNAME -c "git config --global user.name \"$GITNAME\""
+		su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
+	fi
 fi
 
 # install brew
@@ -62,10 +68,20 @@ brew install zsh tmux neovim thefuck fzf chezmoi
 
 # init chezmoi
 chezmoi=$(brew --prefix)/bin/chezmoi
-su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git"
-su -l $USERNAME -c "mkdir -p $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi && $chezmoi completion zsh > $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi/_chezmoi"
+if [[ $(whoami) == $USERNAME ]]
+then
+	$chezmoi init --apply https://github.com/jaron-l/dotfiles.git
+	mkdir -p $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi && $chezmoi completion zsh > $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi/_chezmoi
 
-# set chezmoi author
-su -l $USERNAME -c "$chezmoi git config -- user.name \"Jaron Lundwall\""
-su -l $USERNAME -c "$chezmoi git config -- user.email \"13423952+jaron-l@users.noreply.github.com\""
+	# set chezmoi author
+	$chezmoi git config -- user.name "Jaron Lundwall"
+	$chezmoi git config -- user.email "13423952+jaron-l@users.noreply.github.com"
+else
+	su -l $USERNAME -c "$chezmoi init --apply https://github.com/jaron-l/dotfiles.git"
+	su -l $USERNAME -c "mkdir -p $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi && $chezmoi completion zsh > $USERHOMEDIR/.oh-my-zsh/custom/plugins/chezmoi/_chezmoi"
+
+	# set chezmoi author
+	su -l $USERNAME -c "$chezmoi git config -- user.name \"Jaron Lundwall\""
+	su -l $USERNAME -c "$chezmoi git config -- user.email \"13423952+jaron-l@users.noreply.github.com\""
+fi
 
