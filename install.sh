@@ -8,12 +8,11 @@ set -e # -e: exit on error
 # build tools are for brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	if [ "$(command -v apt)" ]; then
-		apt update && apt install -y build-essential procps curl file git
+		apt update && apt install -y build-essential procps curl file git || sudo apt update && sudo apt install -y build-essential procps curl file git
 	elif [ "$(command -v dnf)" ]; then
-		dnf install -y procps-ng curl file git
+		dnf install -y procps-ng curl file git || sudo dnf install -y procps-ng curl file git
 	elif [ "$(command -v yum)" ]; then
-		yum groupinstall 'Development Tools'
-		yum install -y procps-ng curl file git
+		yum install -y procps-ng curl file git || sudo yum install -y procps-ng curl file git
 	else
 		echo "ERROR: Unsupported package manager" 1>&2
 		exit 1
