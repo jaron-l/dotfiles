@@ -164,6 +164,14 @@ fi
 # amazon configs
 alias bb=brazil-build
 alias br='brazil-recursive-cmd --allPackages'
+alias brcli='brazil-recursive-cmd --allPackages "pwd && zsh || echo 0"'
 if [ -f $HOME/.brazil_completion/zsh_completion ]; then
 	source $HOME/.brazil_completion/zsh_completion
 fi
+
+function git-move-between-repos() {
+	from=$1
+	to=$2
+	mkdir -p $to
+	git log --pretty=email --patch-with-stat --reverse --full-index --binary -m --first-parent -- $from | (cd $to && git am --committer-date-is-author-date)
+}
