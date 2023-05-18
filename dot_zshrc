@@ -165,6 +165,8 @@ fi
 alias bb=brazil-build
 alias br='brazil-recursive-cmd --allPackages'
 alias brcli='brazil-recursive-cmd --allPackages "pwd && zsh || echo 0"'
+# push to backup repo and ignore if no diff to backup
+alias brbk='brazil-recursive-cmd --allPackages "git add . && (git diff-index --quiet HEAD || git commit -m \"$(date)\") && git push backup"'
 if [ -f $HOME/.brazil_completion/zsh_completion ]; then
 	source $HOME/.brazil_completion/zsh_completion
 fi
