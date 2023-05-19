@@ -177,3 +177,8 @@ function git-move-between-repos() {
 	mkdir -p $to
 	git log --pretty=email --patch-with-stat --reverse --full-index --binary -m --first-parent -- $from | (cd $to && git am --committer-date-is-author-date)
 }
+
+function git-cz() {
+	npx git-cz --disable-emoji --edit --scope $1
+}
+
