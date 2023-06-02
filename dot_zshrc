@@ -88,7 +88,6 @@ plugins=(
 	zsh-completions
 	zsh-syntax-highlighting
 	aws
-	asdf
 	brew
 	chezmoi
 	thefuck
@@ -109,6 +108,9 @@ if [ "$(command -v gh)" ]; then
 fi
 if ["$(command -v bw)" ]; then
 	plugins+=bw
+fi
+if [ -f "$(command -v rtx)" ]; then
+	eval "$(rtx activate zsh)"
 fi
 
 source $ZSH/oh-my-zsh.sh
