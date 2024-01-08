@@ -109,8 +109,8 @@ fi
 if ["$(command -v bw)" ]; then
 	plugins+=bw
 fi
-if [ -f "$(command -v rtx)" ]; then
-	eval "$(rtx activate zsh)"
+if [ -f "$(command -v mise)" ]; then
+	eval "$(mise activate zsh)"
 fi
 
 source $ZSH/oh-my-zsh.sh
