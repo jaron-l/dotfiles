@@ -179,6 +179,28 @@ function git-move-between-repos() {
 	git log --pretty=email --patch-with-stat --reverse --full-index --binary -m --first-parent -- $from | (cd $to && git am --committer-date-is-author-date)
 }
 
+function git-split() (
+    if [[ $# -ne 2 ]] ; then
+      echo "Usage: git-split.sh original copy"
+      exit 0
+    fi
+    git mv $1 $2
+    git add $2
+    git commit -m "renamed: $1 -> $2"
+    git branch temp-git-split
+    git reset HEAD~1 --soft
+    git mv $2 temp-git-split-file
+    git commit -m "renamed: $1 -> temp-git-split-file"
+    git merge temp-git-split
+    git add temp-git-split-file
+    git add $2
+    git rm $1
+    git commit -m "merging history"
+    git branch -d temp-git-split
+    git mv temp-git-split-file $1
+    git commit -m "renamed: temp-git-split-file -> $1"
+)
+
 function git-cz() {
 	npx git-cz --disable-emoji --edit --scope $1
 }
