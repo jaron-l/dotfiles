@@ -35,6 +35,7 @@
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     dir                     # current directory
+    shell_level             # I added
     vcs                     # git status
     # =========================[ Line #2 ]=========================
     newline                 # \n
@@ -1700,6 +1701,10 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -b 1 -f 3 -i '⭐' -t 'hello, %n'
+  }
+
+  function prompt_shell_level() {
+    p10k segment -i '' -t "$SHLVL"
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
