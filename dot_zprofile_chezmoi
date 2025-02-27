@@ -7,5 +7,7 @@ fi
 if [ -f /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-cat /etc/motd
+if [ -f /etc/motd ]; then
+  cat /etc/motd
+fi
 echo "------ Root Partition Usage: $(df -h / | awk 'NR==2 {print $5}') ----------"
