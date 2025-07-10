@@ -10,4 +10,6 @@ fi
 if [ -f /etc/motd ]; then
   cat /etc/motd
 fi
-echo "------ Root Partition Usage: $(df -h / | awk 'NR==2 {print $5}') ----------"
+echo "------ Storage Usage ------"
+df -h | grep -v "^/dev/loop" | grep -v "^tmpfs" | grep -v "^devfs" | grep -v "^map" | awk 'NR>1 {printf "%-20s %5s used (%s)\n", $9, $5, $4}'
+echo "-------------------------"
