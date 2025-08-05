@@ -25,13 +25,25 @@ else
 fi
 
 # set up user
-read -e -p "What username do you want to use?: " USERNAME
+if [[ -t 0 ]]; then
+	# Interactive mode
+	read -e -p "What username do you want to use?: " USERNAME
+else
+	# Non-interactive mode - use current user
+	USERNAME=$(whoami)
+	echo "Non-interactive mode: using current user $USERNAME"
+fi
+
 if [ ! `id -u $USERNAME` ]  # determine in username exists
 then
 	echo "Username doesn't exist. Let's create it."
 	useradd $USERNAME
-	echo "Make password for $USERNAME: "
-	passwd $USERNAME
+	if [[ -t 0 ]]; then
+		echo "Make password for $USERNAME: "
+		passwd $USERNAME
+	else
+		echo "Non-interactive mode: skipping password setup for $USERNAME"
+	fi
 	USERHOMEDIR="$( eval echo ~$USERNAME )"
 	mkdir -p $USERHOMEDIR
 	chown -R $USERNAME $USERHOMEDIR
@@ -42,15 +54,31 @@ else
 fi
 
 # setup git
-read -e -p "Do you want to setup your git author? [y/N]: " YN
-if [[ $YN == "y" || $YN == "Y" ]]
-then
-	read -e -p "git name: " -i "Jaron Lundwall" GITNAME
-	read -e -p "git email: " -i "13423952+jaron-l@users.noreply.github.com" GITEMAIL
+if [[ -t 0 ]]; then
+	# Interactive mode
+	read -e -p "Do you want to setup your git author? [y/N]: " YN
+	if [[ $YN == "y" || $YN == "Y" ]]
+	then
+		read -e -p "git name: " -i "Jaron Lundwall" GITNAME
+		read -e -p "git email: " -i "13423952+jaron-l@users.noreply.github.com" GITEMAIL
+		if [[ $(whoami) == $USERNAME ]]
+		then
+			git config --global user.name $GITNAME
+			git config --global user.email $GITEMAIL
+		else
+			su -l $USERNAME -c "git config --global user.name \"$GITNAME\""
+			su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
+		fi
+	fi
+else
+	# Non-interactive mode - use defaults
+	echo "Non-interactive mode: setting up git with default author"
+	GITNAME="Jaron Lundwall"
+	GITEMAIL="13423952+jaron-l@users.noreply.github.com"
 	if [[ $(whoami) == $USERNAME ]]
 	then
-		git config --global user.name $GITNAME
-		git config --global user.email $GITEMAIL
+		git config --global user.name "$GITNAME"
+		git config --global user.email "$GITEMAIL"
 	else
 		su -l $USERNAME -c "git config --global user.name \"$GITNAME\""
 		su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
