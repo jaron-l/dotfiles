@@ -103,6 +103,11 @@ if [ -f "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
 fi
 
+# devspaces
+if [ -f "~/.toolbox/bin/ds" ]; then
+	eval "$(~/.toolbox/bin/ds completion zsh)"
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
