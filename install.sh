@@ -157,7 +157,7 @@ else
 	GITHUB_USERNAME="jaron-l"
 	if [[ $(whoami) == $USERNAME ]]
 	then
-		sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
+		sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/bin init --apply $GITHUB_USERNAME
 	else
 		su -l $USERNAME -c "sh -c \"\$(curl -fsLS get.chezmoi.io)\" -- init --apply $GITHUB_USERNAME"
 	fi
