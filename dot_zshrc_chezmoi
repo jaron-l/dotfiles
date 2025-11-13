@@ -81,8 +81,6 @@ plugins=(
 	aws
 	brew
 	chezmoi
-	thefuck
-	fzf
 	tmux
 	docker
 	docker-compose
@@ -98,6 +96,12 @@ if [ "$(command -v gh)" ]; then
 fi
 if ["$(command -v bw)" ]; then
 	plugins+=bw
+fi
+if [ -f "$(command -v thefuck)" ]; then
+	plugins+=thefuck
+fi
+if [ -f "$(command -v fzf)" ]; then
+	plugins+=fzf
 fi
 if [ -f "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
