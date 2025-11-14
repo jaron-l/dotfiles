@@ -106,6 +106,9 @@ fi
 if [ -f "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
 fi
+if [ -f "$(command -v atuin)" ]; then
+	eval "$(atuin init zsh)"
+fi
 
 # devspaces
 if [ -f "~/.toolbox/bin/ds" ]; then

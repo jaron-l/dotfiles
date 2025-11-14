@@ -132,7 +132,7 @@ if [ "$INSTALL_BREW" = true ]; then
 		test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 		test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	fi
-	brew install zsh tmux neovim thefuck fzf chezmoi
+	brew install zsh tmux neovim thefuck fzf chezmoi atuin
 
 	# init chezmoi
 	chezmoi=$(brew --prefix)/bin/chezmoi
