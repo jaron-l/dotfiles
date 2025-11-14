@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ZSHRC="$HOME/.zshrc"
+
+# Create .zshrc if it doesn't exist
+touch "$ZSHRC"
+
+# Add content only if not already present
+if ! grep -q "alias sc=" "$ZSHRC"; then
+    cat >> "$ZSHRC" << 'EOF'
+
+# Chezmoi managed content
+alias sc='source ~/.zshrc_chezmoi'
+if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "kiro" ]]; then
+    source $HOME/.zshrc_chezmoi
+fi
+EOF
+fi
+
