@@ -94,19 +94,19 @@ fi
 if [ "$(command -v gh)" ]; then
 	plugins+=gh
 fi
-if ["$(command -v bw)" ]; then
+if [ "$(command -v bw)" ]; then
 	plugins+=bw
 fi
-if [ -f "$(command -v thefuck)" ]; then
+if [ "$(command -v thefuck)" ]; then
 	plugins+=thefuck
 fi
-if [ -f "$(command -v fzf)" ]; then
+if [ "$(command -v fzf)" ]; then
 	plugins+=fzf
 fi
-if [ -f "$(command -v mise)" ]; then
+if [ "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
 fi
-if [ -f "$(command -v atuin)" ]; then
+if [ "$(command -v atuin)" ]; then
 	eval "$(atuin init zsh)"
 fi
 
