@@ -132,7 +132,13 @@ if [ "$INSTALL_BREW" = true ]; then
 		test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 		test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	fi
-	brew install zsh tmux neovim thefuck fzf chezmoi atuin
+	brew install zsh tmux neovim thefuck fzf chezmoi atuin bitwarden-cli
+
+	# login to bitwarden (interactive only)
+	if [[ -t 0 ]]; then
+		echo "Logging into Bitwarden..."
+		bw login
+	fi
 
 	# init chezmoi
 	chezmoi=$(brew --prefix)/bin/chezmoi
