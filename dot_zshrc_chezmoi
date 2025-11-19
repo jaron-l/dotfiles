@@ -106,9 +106,6 @@ fi
 if [ "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
 fi
-if [ "$(command -v atuin)" ]; then
-	eval "$(atuin init zsh)"
-fi
 
 # devspaces
 if [ -f "~/.toolbox/bin/ds" ]; then
@@ -116,6 +113,12 @@ if [ -f "~/.toolbox/bin/ds" ]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
+
+# Source after oh-my-zsh.sh because rebinds CTRL-R
+# without this, vi-mode plugin conflicts with CTLR-R setting
+if [ "$(command -v atuin)" ]; then
+	eval "$(atuin init zsh)"
+fi
 
 # User configuration
 
