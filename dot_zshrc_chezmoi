@@ -108,6 +108,9 @@ fi
 if [ "$(command -v mise)" ]; then
 	eval "$(mise activate zsh)"
 fi
+if [ "$(command -v coder)" ]; then
+	eval "$(coder completion --shell zsh --print)"
+fi
 
 # devspaces
 if [ -f "~/.toolbox/bin/ds" ]; then
