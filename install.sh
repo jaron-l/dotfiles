@@ -96,19 +96,6 @@ if [[ -t 0 ]]; then
 			su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
 		fi
 	fi
-else
-	# Non-interactive mode - use defaults
-	echo "Non-interactive mode: setting up git with default author"
-	GITNAME="Jaron Lundwall"
-	GITEMAIL="13423952+jaron-l@users.noreply.github.com"
-	if [[ $(whoami) == $USERNAME ]]
-	then
-		git config --global user.name "$GITNAME"
-		git config --global user.email "$GITEMAIL"
-	else
-		su -l $USERNAME -c "git config --global user.name \"$GITNAME\""
-		su -l $USERNAME -c "git config --global user.email \"$GITEMAIL\""
-	fi
 fi
 
 # ask about brew and package installation
